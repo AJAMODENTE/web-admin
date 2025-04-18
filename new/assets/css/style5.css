@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(to right, #39c4e4, #004b92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: white;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px 0 0 25px;
+}
+
+#logo {
+  width: 180px;
+  margin-bottom: 20px;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.profile p {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  margin-bottom: 10px;
+}
+ 
+.nav-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  background: #48b4ff;
+  cursor: pointer;
+}
+
+.nav-btn.active {
+  background: #0033a0;
+}
+
+.nav-btn:hover {
+  background-color: #003366;
+  color: white;
+}
+
+
+.main-content {
+  flex: 1;
+  background: #00000026;
+  padding: 30px;
+  border-radius: 0 25px 25px 0;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.main-content h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.relocation-card {
+  background: #e0e0e0;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  width: 100%;
+  height: 100%;
+}
+
+select,
+textarea {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  background: white;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+.relocate-btn {
+  align-self: flex-end;
+  background: #00b050;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.relocate-btn:hover {
+  background: #008c3a;
+}
+
+.logout {
+  margin-top: auto;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  background: #007bff;
+  width: 100%;
+  max-width: 100px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.logout img {
+  width: 70px;
+  height: 25px;
+  margin-right: 6px;
+}
+
+.logout:hover {
+  background-color: #003366;
+  color: white;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Events - PCU MAPS</title>
+  <link rel="stylesheet" href="../assets/css/style3.css"/>
+ <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/fullcalendar.min.css" rel="stylesheet">
+
+<!-- Include Moment.js -->
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+
+<!-- Include FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/fullcalendar.min.js"></script>
+ 
+ 
+  <script type="module" src="/includes/authGuard.js"></script>
+  <script type="module" src="/includes/logout.js" defer></script>
+</head>
+<body>
+  <div class="container"> 
+    <div class="sidebar"> 
+      <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+
+      <div class="profile">
+        <img src="../assets/images/admin-icon.png" alt="Profile Picture" class="avatar" />
+        <p>Admin</p>
+      </div>
+
+      <button
+            class="nav-btn active"
+            onclick="window.location.href='/pages/manage_events.html'"
+          >
+            Manage Events
+          </button>
+          <button
+            class="nav-btn"
+            onclick="window.location.href='/relocation/relocation.html'"
+          >
+            Relocation
+          </button>
+
+      <div class="logout">
+        <img src="../assets/images/logout_icon.png" alt="Logout" id="logout" />
+      </div>
+    </div>
+
+    <div class="main-content">
+      <h1>Manage Events</h1>
+      <div class="event-form">
+        <div class="form-header">Create Event</div>
+        <div class="form-body">
+          <div class="left-panel">
+
+            <div class="image-placeholder">
+              <div class="image-box" id="preview-box">Image</div>
+              <input type="file" id="image-input" accept="image/*" style="display: none;" />
+              <div class="image-buttons">
+                <button class="upload-btn" id="upload-btn">Upload Image</button>
+                <button class="delete-btn" id="delete-btn">Delete Image</button>
+              </div>
+            </div>
+            
+
+            <div class="calendar">
+              <div class="calendar-header">
+                <button id="prevMonth">&lt;</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonth">&gt;</button>
+              </div>
+              <div id="calendarDays" class="calendar-days"></div>
+            </div>
+            </div>
+          <div class="right-panel">
+            <input type="text" placeholder="Enter event title" />
+            <textarea placeholder="Enter Event Description"></textarea>
+            <input type="text" id="selected-date" name="selected-date" placeholder="selected date from calendar" readonly />
+
+            <div class="time-picker">
+
+              <label for="start-time">Start Time:</label>
+              <input type="time" id="start-time" required />
+              <label for="end-time">End Time:</label>
+              <input type="time" id="end-time" required />
+            </div>
+
+            <select>
+              <option>Select Department</option>
+            </select>
+
+            <select>
+              <option>Select Course if College</option>
+            </select>
+
+            <button class="create-event-btn">Create Event</button>
+          </div>
+        
+      </div>
+
+      
+
+
+      </div>
+    </div>
+
+
+    
+  </div>
+  <script>
+    const imageInput = document.getElementById("image-input");
+    const uploadBtn = document.getElementById("upload-btn");
+    const deleteBtn = document.getElementById("delete-btn");
+    const previewBox = document.getElementById("preview-box");
+  
+    uploadBtn.addEventListener("click", () => {
+      imageInput.click(); // trigger hidden input
+    });
+  
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewBox.innerHTML = `
+            <img src="${e.target.result}" alt="Preview" 
+                 style="width: 100%; height: 100%; object-fit: fill; border-radius: 10px;" />
+          `;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please upload a valid image file.");
+      }
+    });
+  
+    deleteBtn.addEventListener("click", () => {
+      imageInput.value = "";
+      previewBox.innerHTML = "Image";
+    });
+  </script>
+  
+  <script src="/includes/calendar.js"></script>
+</body>
+</html>

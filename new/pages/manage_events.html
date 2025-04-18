@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/css/style1.css" />
+    <script type="module" src="/includes/authGuard.js"></script>
+    <script type="module" src="/includes/logout.js" defer></script>
+
+      <!-- Firebase Core SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js"></script>
+<script type="module" src="/includes/manageEvents.js"></script>
+
+    <title>Manage Events</title>
+  </head>
+  <body>
+    <div id="Main-Container" class="container-fluid">
+      <div id="Sidebar">
+        <a href="/pages/manage_events.html">
+          <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+        </a>
+
+        <div class="profile">
+          <img src="../assets/images/admin-icon.png" alt="Profile Picture" class="avatar" />
+          <p>Admin</p>
+        </div>
+
+        <div class="nav-btn-group">
+          <button
+            class="nav-btn active"
+            onclick="window.location.href='/pages/manage_events.html'"
+          >
+            Manage Events
+          </button>
+          <button
+            class="nav-btn"
+            onclick="window.location.href='/relocation/relocation.html'"
+          >
+            Relocation
+          </button>
+        </div>
+
+        <img src="../assets/images/logout_icon.png" alt="Logout" id="logout" />
+      </div>
+
+      <div id="content">
+        <div id="glass">
+          <h1>Manage Events</h1>
+          <search>
+            <input type="text" id="search" placeholder="Search Events..." />
+            <button id="search-button">Search</button>
+          </search>
+
+          <!-- Add Event -->
+          <button id="add-event" onclick="window.location.href='/pages/create_events.html'">Create Event</button>
+
+          <!-- Event List -->
+          <div id="event-list">
+            <div class="event-item">
+              <h2>Event Title</h2>
+              <p>Description of the event goes here.</p>
+              <p>Date: 2023-10-01</p>
+              <p>Location: Venue Name</p>
+              <div class="button-container">
+                <button onclick="window.location.href='/pages/edit_events.html'">Edit</button>
+                <button>Delete</button>
+              </div>
+            </div>
+
+            <div class="event-item">
+              <h2>Event Title</h2>
+              <p>Description of the event goes here.</p>
+              <p>Date: 2023-10-01</p>
+              <p>Location: Venue Name</p>
+              <div class="button-container">
+                <button>Edit</button>
+                <button>Delete</button>
+              </div>
+            </div>
+            <!-- You can repeat this event-item block for more events -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+  </body>
+</html>

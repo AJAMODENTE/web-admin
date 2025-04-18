@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relocation - PCU MAPS</title>
+  <link rel="stylesheet" href="../assets/css/style5.css"/>
+  <script type="module" src="/includes/authGuard.js"></script>
+  <script type="module" src="/includes/logout.js" defer></script>
+
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <a href="/pages/manage_events.html">
+        <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+      </a>
+
+      <a href="/pages/profile.html">
+        <img
+          src="../assets/images/admin-icon.png"
+          alt="Profile"
+          id="profile"
+        />
+      </a>
+
+      <button
+      class="nav-btn "
+      onclick="window.location.href='/pages/manage_events.html'"
+    >
+      Manage Events
+    </button>
+    <button
+      class="nav-btn active"
+      onclick="window.location.href='/relocation/relocation.html'"
+    >
+      Relocation
+    </button>
+
+      <div class="logout">
+        <img src="../assets/images/logout_icon.png" alt="Logout Icon" id="logout" />
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <h1>Relocation</h1>
+      <div class="relocation-card">
+        <select>
+          <option>Select Building</option>
+        </select>
+        <select>
+          <option>Select Room No.</option>
+        </select>
+        <textarea placeholder="Enter Room Description
+Ex. COI Office or Classroom"></textarea>
+        <button class="relocate-btn">Relocate</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

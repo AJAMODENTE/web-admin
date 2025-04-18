@@ -1,0 +1,258 @@
+/* Reset default styling */
+* {
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+  font-family: Arial, sans-serif; 
+}
+
+/* Body and background */
+body {
+  height: 100vh;
+  background: linear-gradient(to right, #38b6ff, #0047ab);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Main container */
+#Main-Container {
+  display: flex;
+  width: 95%;
+  height: 90vh;
+  border-radius: 25px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Side Menu */
+#Sidebar {
+  background: white;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px 0 0 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.nav-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  background: #48b4ff;
+  cursor: pointer;
+}
+
+.nav-btn.active {
+  background: #0033a0;
+}
+
+.nav-btn:hover {
+  background-color: #003366;
+  color: white;
+}
+
+.nav-btn-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Reduce spacing between Manage Events & Relocation buttons */
+}
+
+
+/* Content area */
+#content {
+  flex: 1;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Glass effect panel */
+#glass {
+  flex: 1;
+  height: 100%;
+  padding: 40px;
+  background: linear-gradient(to right, #3267846a, #1e407ab7);
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  overflow-y: auto;
+}
+
+/* Header */
+#glass h1 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+/* Search and Create Event */
+search {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+#search {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+}
+
+#search-button {
+  display: flex;
+  padding: 10px 15px;
+  background-color: #369add;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#search-button:hover {
+  background-color: #2980b9;
+}
+
+#add-event {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+#add-event:hover {
+  background-color: #1b6600;
+  color: white;
+}
+
+/* Event list */
+#event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Modern event card style */
+.event-item {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #333;
+}
+
+.event-item h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2d3d;
+}
+
+.event-item p {
+  font-size: 14px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.button-container button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button-container button:first-of-type {
+  background-color: #f57c00;
+}
+
+.button-container button:first-of-type:hover {
+  background-color: #aa5904;
+  color: white;
+}
+
+.button-container button:last-of-type {
+  background-color: #ed2222;
+}
+
+.button-container button:last-of-type:hover {
+  background-color: #aa0404;
+  color: white;
+}
+
+/* Logout */
+#logout {
+  margin-top: auto;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  background: #007bff;
+  width: 100%;
+  max-width: 100px;
+  transition: background 0.3s, color 0.3s;
+}
+
+
+#logout img {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+
+#logout:hover {
+  background-color: #003366;
+  color: white;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile .avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #ccc;
+}
+
+.profile p {
+  font-weight: bold;
+  font-size: 16px;
+}
