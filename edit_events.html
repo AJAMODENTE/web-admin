@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Events - PCU MAPS</title>
+  <link rel="stylesheet" href="../assets/css/style4.css"/>
+  <script type="module" src="/includes/authGuard.js"></script>
+  <script type="module" src="/includes/logout.js" defer></script>
+</head>
+<body>
+  <div class="container"> 
+    <aside class="sidebar">
+      <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+
+      <div class="profile">
+        <img src="../assets/images/admin-icon.png" alt="Profile Picture" class="avatar" />
+        <p>Admin</p>
+      </div>
+
+      <button class="nav-btn active" onclick="window.location.href='/pages/manage_events.html'">Manage Events</button>
+      <button class="nav-btn" onclick="window.location.href='/relocation/relocation.html'">Relocation</button>
+
+      <div class="logout">
+        <img src="../assets/images/logout_icon.png" alt="Logout" id="logout" />
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <h1>Edit Events</h1>
+      <div class="event-form">
+        <div class="form-header">Edit Event</div>
+        <div class="form-body">
+          <div class="left-panel">
+            <div class="image-placeholder">
+              <div class="image-box" id="preview-box">Image</div>
+              <input type="file" id="image-input" accept="image/*" style="display: none;" />
+              <div class="image-buttons">
+                <button class="upload-btn" id="upload-btn">Upload Image</button>
+                <button class="delete-btn" id="delete-btn">Delete Image</button>
+              </div>
+            </div>
+          </div>
+          <div class="right-panel">
+            <input type="text" id="event-title" placeholder="Enter event title" required />
+            <textarea id="event-description" placeholder="Enter Event Description" required></textarea>
+            <input type="date" id="selected-date" name="selected-date" placeholder="selected date from calendar" />
+
+            <div class="time-picker">
+              <label for="start-time">Start Time:</label>
+              <input type="time" id="start-time" required />
+              <label for="end-time">End Time:</label>
+              <input type="time" id="end-time" required />
+            </div>
+
+            <select id="departmentInput" required>
+              <option>Select Department</option>
+              <option value="COI">COI</option>
+              <option value="COT">COT</option>
+              <option value="CBA">CBA</option>
+            </select>
+
+            <select id="courseInput" required>
+              <option>Select Course if College</option>
+              <option value="BSIT">BSIT</option>
+              <option value="BSCS">BSCS</option>
+              <option value="BSA">BSA</option>
+            </select>
+
+            <button class="edit-event-btn">Edit Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase, ref, get ,update} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCq8eXVoQtt_l9EFkIhYxzoUvW7HOIvZzk",
+      authDomain: "pcu-maps-5d985.firebaseapp.com",
+      databaseURL: "https://pcu-maps-5d985-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "pcu-maps-5d985",
+      storageBucket: "pcu-maps-5d985.firebasestorage.app",
+      messagingSenderId: "922913954447",
+      appId: "1:922913954447:web:c9f2db5e796c56fb7b2efa"
+    };
+
+    // Initialize Firebase only if it's not already initialized
+    let appa;
+    try {
+      appa = initializeApp(firebaseConfig); // This will throw an error if the app already exists
+    } catch (error) {
+      console.log("Firebase app already initialized:", error);
+      appa = getApp(); // Retrieve the existing app if it's already initialized
+    }
+
+    const dba = getDatabase(appa); // ✅ use the initialized app
+
+    // Get the event ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get('eventId');
+
+    if (eventId) {
+      // Fetch event data from Firebase
+      const eventRef = ref(dba, 'events/' + eventId);
+
+      get(eventRef)
+        .then((snapshot) => {
+          const eventData = snapshot.val();
+          if (eventData) {
+            // Populate form fields with the event data
+            document.getElementById("event-title").value = eventData.event_title;
+            document.getElementById("event-description").value = eventData.event_description;
+            document.getElementById("selected-date").value = eventData.selected_date;
+            document.getElementById("start-time").value = eventData.start_time;
+            document.getElementById("end-time").value = eventData.end_time;
+            document.getElementById("departmentInput").value = eventData.department;
+            document.getElementById("courseInput").value = eventData.course;
+          } else {
+            alert("Event not found.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching event data:", error);
+          alert("Failed to fetch event data.");
+        });
+    } else {
+      alert("No event ID provided.");
+    }
+
+    // Handle the form submission for editing the event
+    const button = document.querySelector(".edit-event-btn");
+
+    button.addEventListener("click", () => {
+      const title = document.getElementById("event-title").value;
+      const description = document.getElementById("event-description").value;
+      const date = document.getElementById("selected-date").value;
+      const startTime = document.getElementById("start-time").value;
+      const endTime = document.getElementById("end-time").value;
+      const department = document.getElementById("departmentInput").value;
+      const course = document.getElementById("courseInput").value;
+
+      if (!title || !date || !startTime || !endTime || !department || !course) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      // Update the event in Firebase
+      const eventRef = ref(dba, 'events/' + eventId);
+
+      update(eventRef, {
+        event_title: title,
+        event_description: description,
+        selected_date: date,
+        start_time: startTime,
+        end_time: endTime,
+        department: department,
+        course: course,
+      })
+        .then(() => {
+          alert("Event updated successfully!");
+          window.location.href = '/pages/manage_events.html'; // Redirect to event management page
+        })
+        .catch((error) => {
+          console.error("Error updating event:", error);
+          alert("Failed to update event.");
+        });
+    });
+  </script>
+</body>
+</html>

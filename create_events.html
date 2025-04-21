@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Events - PCU MAPS</title>
+    <link rel="stylesheet" href="../assets/css/style3.css" />
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/fullcalendar.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/fullcalendar.min.js"></script>
+
+    <script type="module" src="/includes/authGuard.js"></script>
+    <script type="module" src="/includes/logout.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+
+        <div class="profile">
+          <img
+            src="../assets/images/admin-icon.png"
+            alt="Profile Picture"
+            class="avatar"
+          />
+          <p>Admin</p>
+        </div>
+
+        <button
+          class="nav-btn active"
+          onclick="window.location.href='/pages/manage_events.html'"
+        >
+          Manage Events
+        </button>
+        <button
+          class="nav-btn"
+          onclick="window.location.href='/relocation/relocation.html'"
+        >
+          Relocation
+        </button>
+
+        <div class="logout">
+          <img
+            src="../assets/images/logout_icon.png"
+            alt="Logout"
+            id="logout"
+          />
+        </div>
+      </div>
+
+      <div class="main-content">
+        <h1>Create Events</h1>
+        <div class="event-form">
+          <div class="form-header">Create Event</div>
+          <div class="form-body">
+            <div class="left-panel">
+              <div class="image-placeholder">
+                <div class="image-box" id="preview-box">Image</div>
+                <input
+                  type="file"
+                  id="image-input"
+                  accept="image/*"
+                  style="display: none"
+                />
+                <div class="image-buttons">
+                  <button class="upload-btn" id="upload-btn">
+                    Upload Image
+                  </button>
+                  <button class="delete-btn" id="delete-btn">
+                    Delete Image
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="right-panel">
+              <input
+                type="text"
+                id="event-title"
+                placeholder="Enter event title"
+              />
+              <textarea
+                id="event-description"
+                placeholder="Enter Event Description"
+              ></textarea>
+              <input
+                type="date"
+                id="selected-date"
+                name="selected-date"
+                placeholder="selected date from calendar"
+              />
+
+              <div class="time-picker">
+                <label for="start-time">Start Time:</label>
+                <input id="start-time" type="time" /><br />
+                <label for="end-time">End Time:</label>
+                <input id="end-time" type="time" /><br />
+              </div>
+
+              <select id="departmentInput" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="COI">COI</option>
+                <option value="COT">COT</option>
+                <option value="CBA">CBA</option>
+              </select>
+
+              <select id="courseInput" required>
+                <option value="" disabled selected>
+                  Select Course if College
+                </option>
+                <option value="BSIT">BSIT</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BSA">BSA</option>
+                <option value="BSAIS">BSAIS</option>
+              </select>
+              <button class="create-event-btn" id="create-event-btn">
+                Create Event
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/includes/img.js"></script>
+
+    <script type="module">
+      import {
+        initializeApp,
+        getApp,
+      } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        push,
+      } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+  apiKey: "AIzaSyCq8eXVoQtt_l9EFkIhYxzoUvW7HOIvZzk",
+  authDomain: "pcu-maps-5d985.firebaseapp.com",
+  databaseURL: "https://pcu-maps-5d985-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pcu-maps-5d985",
+  storageBucket: "pcu-maps-5d985.firebasestorage.app",
+  messagingSenderId: "922913954447",
+  appId: "1:922913954447:web:c9f2db5e796c56fb7b2efa"
+};
+
+      // Initialize Firebase only if it's not already initialized
+      let appa;
+      try {
+        appa = initializeApp(firebaseConfig); // This will throw an error if the app already exists
+      } catch (error) {
+        console.log("Firebase app already initialized:", error);
+        appa = getApp(); // Retrieve the existing app if it's already initialized
+      }
+
+      const dba = getDatabase(appa); // ✅ use the initialized app
+
+      // Event creation code
+      const title = document.getElementById("event-title");
+      const description = document.getElementById("event-description");
+      const date = document.getElementById("selected-date");
+      const startTime = document.getElementById("start-time");
+      const endTime = document.getElementById("end-time");
+      const department = document.getElementById("departmentInput");
+      const course = document.getElementById("courseInput");
+      const button = document.getElementById("create-event-btn");
+
+      button.addEventListener("click", () => {
+        if (!title.value || !date.value || !startTime.value || !endTime.value || !department.value || !course.value) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+
+        const newEventRef = push(ref(dba, "events"));
+
+        set(newEventRef, {
+          event_title: title.value,
+          event_description: description.value,
+          selected_date: date.value,
+          start_time: startTime.value,
+          end_time: endTime.value,
+          department: department.value,
+          course: course.value,
+        })
+          .then(() => {
+            alert("Event created successfully!");
+            title.value = "";
+            description.value = "";
+            date.value = "";
+            startTime.value = "";
+            endTime.value = "";
+            department.value = "";
+            course.value = "";
+            document.getElementById("preview-box").style.backgroundImage = "none"; // Reset image preview
+          })
+          .catch((error) => {
+            console.error("Firebase error:", error);
+            alert("Failed to create event. Check console.");
+          });
+      });
+    </script>
+  </body>
+</html>

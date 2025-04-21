@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/css/style1.css" />
+
+  <!-- Firebase Auth Guard and Logout (Modules) -->
+  <script type="module" src="/includes/authGuard.js"></script>
+  <script type="module" src="/includes/logout.js" defer></script>
+
+  <!-- Firebase and Realtime Database Setup -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyCq8eXVoQtt_l9EFkIhYxzoUvW7HOIvZzk",
+  authDomain: "pcu-maps-5d985.firebaseapp.com",
+  databaseURL: "https://pcu-maps-5d985-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pcu-maps-5d985",
+  storageBucket: "pcu-maps-5d985.firebasestorage.app",
+  messagingSenderId: "922913954447",
+  appId: "1:922913954447:web:c9f2db5e796c56fb7b2efa"
+};
+
+    let app;
+    if (!getApps().length) {
+      app = initializeApp(firebaseConfig);
+    } else {
+      app = getApps()[0];
+    }
+
+    const db = getDatabase(app);
+    window.firebaseDB = db; // Optional: make it globally accessible if needed
+  </script>
+
+  <!-- Your manageEvents logic -->
+  <script type="module" src="/includes/manageEvents.js"></script>
+
+    <title>Manage Events</title>
+  </head>
+  <body>
+    <div id="Main-Container" class="container-fluid">
+      <div id="Sidebar">
+        <a href="/pages/manage_events.html">
+          <img src="../assets/images/pcu-logo.png" alt="Logo" id="logo" />
+        </a>
+
+        <div class="profile">
+          <img src="../assets/images/admin-icon.png" alt="Profile Picture" class="avatar" />
+          <p>Admin</p>
+        </div>
+
+        <div class="nav-btn-group">
+          <button
+            class="nav-btn active"
+            onclick="window.location.href='/pages/manage_events.html'"
+          >
+            Manage Events
+          </button>
+          <button
+            class="nav-btn"
+            onclick="window.location.href='/relocation/relocation.html'"
+          >
+            Relocation
+          </button>
+        </div>
+
+        <img src="../assets/images/logout_icon.png" alt="Logout" id="logout" />
+      </div>
+
+      <div id="content">
+        <div id="glass">
+          <h1>Manage Events</h1>
+          <search>
+            <input type="text" id="search" placeholder="Search Events..." />
+            <button id="search-button">Search</button>
+          </search>
+
+          <!-- Add Event -->
+          <button id="add-event" onclick="window.location.href='/pages/create_events.html'">Create Event</button>
+          
+          <script type="module">
+             import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+             import { getDatabase, ref, get,child,remove } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+  
+          
+            // Initialize Firebase only if it's not already initialized
+            let appa;
+            try {
+              appa = initializeApp(firebaseConfig); // This will throw an error if the app already exists
+            } catch (error) {
+              console.log("Firebase app already initialized:", error);
+              appa = getApp(); // Retrieve the existing app if it's already initialized
+            }
+          
+            const dba = getDatabase(appa); // ✅ use the initialized app
+          
+            // Function to fetch events from Firebase and display them
+            function fetchEvents() {
+              const eventListRef = ref(dba, 'events');
+          
+              get(eventListRef)
+                .then((snapshot) => {
+                  const events = snapshot.val();
+                  const eventListDiv = document.getElementById("event-list");
+                  eventListDiv.innerHTML = ''; // Clear existing event list
+          
+                  if (events) {
+                    Object.keys(events).forEach((eventId) => {
+                      const event = events[eventId];
+                      const eventItemDiv = document.createElement("div");
+                      eventItemDiv.classList.add("event-item");
+          
+                      eventItemDiv.innerHTML = `
+                        <h2>${event.event_title}</h2>
+                        <p>${event.event_description}</p>
+                        <p>Date: ${event.selected_date}</p>
+                        <p>For: ${event.department} - ${event.course}</p>
+                        <div class="button-container">
+                          <button onclick="window.location.href='/pages/edit_events.html?eventId=${eventId}'">Edit</button>
+                          <button onclick="deleteEvent('${eventId}')">Delete</button>
+                        </div>
+                      `;
+
+          
+                      eventListDiv.appendChild(eventItemDiv);
+                    });
+                  } else {
+                    eventListDiv.innerHTML = "<p>No events available.</p>";
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error fetching events:", error);
+                });
+            }
+          
+            // Function to delete an event from Firebase
+            function deleteEvent(eventId) {
+              const eventRef = ref(dba, 'events/' + eventId);  // Create a reference to the event in Firebase
+
+              remove(eventRef)  // Remove the event from the database
+                .then(() => {
+                  alert("Event deleted successfully!");
+                  fetchEvents();  // Refresh the event list after deletion
+                })
+                .catch((error) => {
+                  console.error("Error deleting event:", error);
+                  alert("Failed to delete event.");
+                });
+            }
+            window.deleteEvent = deleteEvent;
+          
+            // Fetch events on page load
+            window.onload = fetchEvents;
+          </script>
+          <!-- Event List -->
+          <div id="event-list">
+            <!-- You can repeat this event-item block for more events -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+  </body>
+</html>
